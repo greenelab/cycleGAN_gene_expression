@@ -10,12 +10,14 @@
 
 get_ipython().run_line_magic('load_ext', 'autoreload')
 get_ipython().run_line_magic('autoreload', '2')
+get_ipython().run_line_magic('matplotlib', 'inline')
 
 import os
 import pandas as pd
 import numpy as np
 import random
 import seaborn as sns
+import matplotlib.pyplot as plt
 
 from numpy.random import seed
 randomState = 123
@@ -41,16 +43,20 @@ print(original_shape)
 data.head(5)
 
 
+# ## Train
+
 # In[4]:
 
 
-get_ipython().run_line_magic('run', 'cyclegan_transcript.py --dataset_name "pseudomonas" --n_epochs 20 --decay_epoch 10 --input_dim 5549 --hidden_dim 1000 --output_dim 100 --num_samples 1191')
+get_ipython().run_line_magic('run', 'cyclegan_transcript.py --dataset_name "pseudomonas" --n_epochs 200 --decay_epoch 100 --input_dim 5549 --hidden_dim 1000 --output_dim 100 --num_samples 1191 --batch_size 100')
 
 
-# In[31]:
+# ## Plot
+
+# In[5]:
 
 
-# Plot loss
+# Read in loss files
 G_loss_file = os.path.join(
     os.path.dirname(os.path.dirname(os.getcwd())),
     "data","pseudomonas","train", "G_loss.txt")
@@ -63,24 +69,22 @@ G_loss_data = pd.read_csv(G_loss_file, header=None, sep=',').T
 D_loss_data = pd.read_csv(D_loss_file, header=None, sep=',').T
 
 
-# In[32]:
+# In[6]:
 
 
 G_loss_data
 
 
-# In[33]:
+# In[7]:
 
 
 D_loss_data
 
 
-# In[36]:
+# In[8]:
 
 
-import matplotlib.pyplot as plt
-get_ipython().run_line_magic('matplotlib', 'inline')
-
+# Generator loss
 G_loss_out_file = os.path.join(
     os.path.dirname(os.path.dirname(os.getcwd())),
     "data","pseudomonas","train", "G_loss_plot.jpg")
@@ -93,9 +97,10 @@ plt.ylabel('Generator Loss')
 fig.savefig(G_loss_out_file)
 
 
-# In[37]:
+# In[9]:
 
 
+# Discriminator loss
 D_loss_out_file = os.path.join(
     os.path.dirname(os.path.dirname(os.getcwd())),
     "data","pseudomonas","train","D_loss_plot.jpg")
