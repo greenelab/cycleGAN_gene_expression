@@ -10,7 +10,7 @@ import pandas as pd
 import torchvision.transforms as transforms
 from torchvision.utils import save_image, make_grid
 
-from torch.utils.data import DataLoader
+from torch.utils.data import DataLoader, TensorDataset
 from torchvision import datasets
 from torch.autograd import Variable
 
@@ -77,10 +77,6 @@ input_shape = (opt.num_samples, opt.input_dim)
 intermediate_dim = opt.hidden_dim
 output_dim = opt.output_dim
 
-print(input_shape)
-print(type(intermediate_dim))
-print(type(output_dim))
-
 # Initialize generator and discriminator
 G_AB = GeneratorResNet(input_shape, intermediate_dim,
                        output_dim, opt.n_residual_blocks)
@@ -145,30 +141,30 @@ fake_A_buffer = ReplayBuffer()
 fake_B_buffer = ReplayBuffer()
 
 
-# Training data loader****************
+# Training data loader
 data_file = os.path.join("../../data/%s" % opt.dataset_name +
                          "/train/A/all-pseudomonas-gene-normalized.zip")
-rnaseq = pd.read_table(data_file, index_col=0, header=0)
+rnaseq = pd.read_table(data_file, index_col=0, header=0).T
+rnaseq_tensor = torch.FloatTensor(rnaseq.values)
+print(rnaseq.shape)
+
+# query biofilm in pandas space
+# grab the indicies from that
+
 
 dataloader = DataLoader(
-    rnaseq,
-    # ImageDataset("../../data/%s" % opt.dataset_name,
-    #             transforms_=transforms_, unaligned=True),
+    TensorDataset(rnaseq_tensor),
     batch_size=opt.batch_size,
     shuffle=True,
     num_workers=opt.n_cpu,
 )
 # Test data loader
 val_dataloader = DataLoader(
-    rnaseq,
-    #ImageDataset("../../data/%s" % opt.dataset_name,
-    #             transforms_=transforms_, unaligned=True, mode="test"),
+    TensorDataset(rnaseq_tensor),
     batch_size=5,
     shuffle=True,
     num_workers=1,
 )
-
-#*************************
 
 
 def sample_images(batches_done):
@@ -195,13 +191,17 @@ def sample_images(batches_done):
 #  Training
 # ----------
 
+loss_G_perEpoch = np.zeros([1, opt.n_epochs])
+loss_D_perEpoch = np.zeros([1, opt.n_epochs])
+
 prev_time = time.time()
+
 for epoch in range(opt.epoch, opt.n_epochs):
     for i, batch in enumerate(dataloader):
 
         # Set model input
-        real_A = Variable(batch["A"].type(Tensor))
-        real_B = Variable(batch["B"].type(Tensor))
+        real_A = batch[0]  # number of samples in category A
+        real_B = batch[0]
 
         # Adversarial ground truths
         valid = Variable(
@@ -310,9 +310,13 @@ for epoch in range(opt.epoch, opt.n_epochs):
             )
         )
 
-        # If at sample interval save image
-        if batches_done % opt.sample_interval == 0:
-            sample_images(batches_done)
+    # Save loss_G and loss_D per epoch
+    loss_G_perEpoch[0, epoch - 1] = loss_G.item()
+    loss_D_perEpoch[0, epoch - 1] = loss_D.item()
+
+    # If at sample interval save image
+    # if batches_done % opt.sample_interval == 0:
+    #    sample_images(batches_done)
 
     # Update learning rates
     lr_scheduler_G.step()
@@ -329,3 +333,11 @@ for epoch in range(opt.epoch, opt.n_epochs):
                    (opt.dataset_name, epoch))
         torch.save(D_B.state_dict(), "saved_models/%s/D_B_%d.pth" %
                    (opt.dataset_name, epoch))
+
+# Write loss arrays to file
+G_loss_file = os.path.join("../../data/%s" % opt.dataset_name +
+                           "/train/G_loss.txt")
+D_loss_file = os.path.join("../../data/%s" % opt.dataset_name +
+                           "/train/D_loss.txt")
+np.savetxt(G_loss_file, loss_G_perEpoch, delimiter=',')
+np.savetxt(D_loss_file, loss_D_perEpoch, delimiter=',')

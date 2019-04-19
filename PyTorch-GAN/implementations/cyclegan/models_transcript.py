@@ -1,6 +1,9 @@
 import torch.nn as nn
 import torch.nn.functional as F
 import torch
+from torch.utils.data import DataLoader
+import pandas as pd
+import numpy as np
 
 
 def weights_init_normal(m):
@@ -77,6 +80,7 @@ class Discriminator(nn.Module):
         super(Discriminator, self).__init__()
 
         input_dim = input_shape[1]
+        self.output_shape = (1, output_dim)
 
         # Extract features from generated sample
         self.model = nn.Sequential(
