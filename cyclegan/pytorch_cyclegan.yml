@@ -1,0 +1,17 @@
+name: pytorch_cyclegan
+channels:
+- pytorch
+- conda-forge
+- defaults
+dependencies:
+- conda-forge::python=3.6
+- conda-forge::torchvision
+- conda-forge::matplotlib
+- conda-forge::numpy
+- conda-forge::scipy
+- conda-forge::urllib3
+- conda-forge::pandas=0.20.3
+- conda-forge::scikit-image
+- pip:
+  - torch>=0.4.0
+  - pillow
