@@ -142,7 +142,7 @@ fake_B_buffer = ReplayBuffer()
 
 
 # Training data loader
-data_file = os.path.join("../../data/%s" % opt.dataset_name +
+data_file = os.path.join("../data/%s" % opt.dataset_name +
                          "/train/A/all-pseudomonas-gene-normalized.zip")
 rnaseq = pd.read_table(data_file, index_col=0, header=0).T
 rnaseq_tensor = torch.FloatTensor(rnaseq.values)
@@ -335,9 +335,9 @@ for epoch in range(opt.epoch, opt.n_epochs):
                    (opt.dataset_name, epoch))
 
 # Write loss arrays to file
-G_loss_file = os.path.join("../../data/%s" % opt.dataset_name +
+G_loss_file = os.path.join("../data/%s" % opt.dataset_name +
                            "/train/G_loss.txt")
-D_loss_file = os.path.join("../../data/%s" % opt.dataset_name +
+D_loss_file = os.path.join("../data/%s" % opt.dataset_name +
                            "/train/D_loss.txt")
 np.savetxt(G_loss_file, loss_G_perEpoch, delimiter=',')
 np.savetxt(D_loss_file, loss_D_perEpoch, delimiter=',')

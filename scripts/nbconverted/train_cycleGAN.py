@@ -29,7 +29,7 @@ seed(randomState)
 
 # Load arguments
 data_file = os.path.join(
-    os.path.dirname(os.path.dirname(os.getcwd())),
+    os.path.dirname(os.getcwd()),
     "data","pseudomonas","train", "A", "all-pseudomonas-gene-normalized.zip")
 
 
@@ -48,45 +48,45 @@ data.head(5)
 # In[4]:
 
 
-get_ipython().run_line_magic('run', 'cyclegan_transcript.py --dataset_name "pseudomonas" --n_epochs 1000 --decay_epoch 500 --input_dim 5549 --hidden_dim 1000 --output_dim 100 --num_samples 1191 --batch_size 100')
+get_ipython().run_line_magic('run', 'cyclegan_transcript.py --dataset_name "pseudomonas" --n_epochs 100 --decay_epoch 50 --input_dim 5549 --hidden_dim 1000 --output_dim 100 --num_samples 1191 --batch_size 100')
 
 
 # ## Plot
 
-# In[5]:
+# In[6]:
 
 
 # Read in loss files
 G_loss_file = os.path.join(
-    os.path.dirname(os.path.dirname(os.getcwd())),
+    os.path.dirname(os.getcwd()),
     "data","pseudomonas","train", "G_loss.txt")
 
 D_loss_file = os.path.join(
-    os.path.dirname(os.path.dirname(os.getcwd())),
+    os.path.dirname(os.getcwd()),
     "data","pseudomonas","train","D_loss.txt")
 
 G_loss_data = pd.read_csv(G_loss_file, header=None, sep=',').T
 D_loss_data = pd.read_csv(D_loss_file, header=None, sep=',').T
 
 
-# In[6]:
+# In[7]:
 
 
 G_loss_data
 
 
-# In[7]:
+# In[8]:
 
 
 D_loss_data
 
 
-# In[8]:
+# In[9]:
 
 
 # Generator loss
 G_loss_out_file = os.path.join(
-    os.path.dirname(os.path.dirname(os.getcwd())),
+    os.path.dirname(os.getcwd()),
     "data","pseudomonas","train", "G_loss_plot.jpg")
 
 fig = plt.figure()
@@ -97,12 +97,12 @@ plt.ylabel('Generator Loss')
 fig.savefig(G_loss_out_file)
 
 
-# In[9]:
+# In[10]:
 
 
 # Discriminator loss
 D_loss_out_file = os.path.join(
-    os.path.dirname(os.path.dirname(os.getcwd())),
+    os.path.dirname(os.getcwd()),
     "data","pseudomonas","train","D_loss_plot.jpg")
 
 fig = plt.figure()
