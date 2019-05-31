@@ -15,9 +15,7 @@ from torchvision import datasets
 from torch.autograd import Variable
 
 from models_transcript import *
-from datasets import *
 from utils import *
-
 import torch.nn as nn
 import torch.nn.functional as F
 import torch
@@ -205,9 +203,9 @@ for epoch in range(opt.epoch, opt.n_epochs):
 
         # Adversarial ground truths
         valid = Variable(
-            Tensor(np.ones((real_A.size(0), *D_A.output_shape))), requires_grad=False)
+            Tensor(np.ones((real_A.size(0), 1))), requires_grad=False)
         fake = Variable(
-            Tensor(np.zeros((real_A.size(0), *D_A.output_shape))), requires_grad=False)
+            Tensor(np.zeros((real_A.size(0), 1))), requires_grad=False)
 
         # ------------------
         #  Train Generators
@@ -271,9 +269,11 @@ for epoch in range(opt.epoch, opt.n_epochs):
 
         # Real loss
         loss_real = criterion_GAN(D_B(real_B), valid)
+
         # Fake loss (on batch of previously generated samples)
         fake_B_ = fake_B_buffer.push_and_pop(fake_B)
         loss_fake = criterion_GAN(D_B(fake_B_.detach()), fake)
+
         # Total loss
         loss_D_B = (loss_real + loss_fake) / 2
 

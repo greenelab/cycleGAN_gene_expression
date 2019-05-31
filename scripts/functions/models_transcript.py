@@ -80,13 +80,15 @@ class Discriminator(nn.Module):
         super(Discriminator, self).__init__()
 
         input_dim = input_shape[1]
-        self.output_shape = (1, output_dim)
+        self.output_shape = (output_dim)
 
         # Extract features from generated sample
         self.model = nn.Sequential(
             nn.Linear(input_dim, hidden_dim),
             nn.ReLU(),
             nn.Linear(hidden_dim, output_dim),
+            nn.ReLU(),
+            nn.Linear(output_dim, 1),
         )
 
     def forward(self, img):

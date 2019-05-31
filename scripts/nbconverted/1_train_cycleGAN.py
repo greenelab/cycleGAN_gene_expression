@@ -3,7 +3,11 @@
 
 # # Train cycleGAN
 # 
-# Scripts to train cycleGAN were adopted from [https://github.com/eriklindernoren/PyTorch-GAN#cyclegan] and modified to 1) use fully connected networks as opposed to convoultional neural networks and 2) input gene expression data as opposed to image data
+# Scripts to train cycleGAN were adopted from the [cycleGAN repository](https://github.com/eriklindernoren/PyTorch-GAN#cyclegan) that were based on the [Unpaired Image-to-Image Translation using Cycle-Consistent Adversarial Networks](https://arxiv.org/pdf/1703.10593.pdf) paper.
+# 
+# The scripts were modified to:
+# 1. Use fully connected networks as opposed to convoultional neural networks
+# 2. Input gene expression data as opposed to image data
 
 # In[1]:
 
@@ -30,14 +34,14 @@ seed(randomState)
 # Load arguments
 data_file = os.path.join(
     os.path.dirname(os.getcwd()),
-    "data","pseudomonas","train", "A", "all-pseudomonas-gene-normalized.zip")
+    "data", "pseudomonas", "train_set_normalized.pcl")
 
 
 # In[3]:
 
 
 # Read in data
-data = pd.read_table(data_file, header=0, sep='\t', index_col=0, compression='zip').T
+data = pd.read_table(data_file, header=0, sep='\t', index_col=0).T
 original_shape = data.shape
 print(original_shape)
 data.head(5)
@@ -48,12 +52,12 @@ data.head(5)
 # In[4]:
 
 
-get_ipython().run_line_magic('run', 'cyclegan_transcript.py --dataset_name "pseudomonas" --n_epochs 100 --decay_epoch 50 --input_dim 5549 --hidden_dim 1000 --output_dim 100 --num_samples 1191 --batch_size 100')
+get_ipython().run_line_magic('run', 'functions/cyclegan_transcript.py --dataset_name "pseudomonas" --n_epochs 100 --decay_epoch 50 --input_dim 5549 --hidden_dim 1000 --output_dim 100 --num_samples 1191 --batch_size 100')
 
 
 # ## Plot
 
-# In[6]:
+# In[5]:
 
 
 # Read in loss files
@@ -69,19 +73,19 @@ G_loss_data = pd.read_csv(G_loss_file, header=None, sep=',').T
 D_loss_data = pd.read_csv(D_loss_file, header=None, sep=',').T
 
 
+# In[6]:
+
+
+G_loss_data.head(5)
+
+
 # In[7]:
 
 
-G_loss_data
+D_loss_data.head(5)
 
 
 # In[8]:
-
-
-D_loss_data
-
-
-# In[9]:
 
 
 # Generator loss
@@ -97,7 +101,7 @@ plt.ylabel('Generator Loss')
 fig.savefig(G_loss_out_file)
 
 
-# In[10]:
+# In[9]:
 
 
 # Discriminator loss

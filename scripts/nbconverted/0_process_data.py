@@ -65,8 +65,8 @@ seed(randomState)
 
 
 # Load arguments
-data_file = os.path.join(os.path.dirname(os.getcwd()), "data", "Pa_compendium_02.22.2014.pcl")
-normalized_data_file = os.path.join(os.path.dirname(os.getcwd()), "data", "train_set_normalized.pcl")
+data_file = os.path.join(os.path.dirname(os.getcwd()), "data", "pseudomonas", "Pa_compendium_02.22.2014.pcl")
+normalized_data_file = os.path.join(os.path.dirname(os.getcwd()), "data", "pseudomonas", "train_set_normalized.pcl")
 metadata_file = os.path.join(os.path.dirname(os.getcwd()), "metadata", "sample_annotations.tsv")
 
 
