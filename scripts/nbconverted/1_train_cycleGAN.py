@@ -32,7 +32,7 @@ seed(randomState)
 
 
 # Load arguments
-data_file = f"{os.path.dir(os.getcwd())}/data/pseudomonas/train_set_normalized.pcl"
+data_file = f"{os.path.dirname(os.getcwd())}/data/pseudomonas/train_set_normalized.pcl"
 
 
 # In[3]:

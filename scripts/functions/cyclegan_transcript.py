@@ -121,15 +121,15 @@ optimizer_D_B = torch.optim.Adam(
 # Learning rate update schedulers
 lr_scheduler_G = torch.optim.lr_scheduler.LambdaLR(
     optimizer_G, lr_lambda=LambdaLR(
-        opt.n_epochs, opt.epoch, opt.decay_epoch).step
+        opt.n_epochs, opt.epoch_resume, opt.decay_epoch).step
 )
 lr_scheduler_D_A = torch.optim.lr_scheduler.LambdaLR(
     optimizer_D_A, lr_lambda=LambdaLR(
-        opt.n_epochs, opt.epoch, opt.decay_epoch).step
+        opt.n_epochs, opt.epoch_resume, opt.decay_epoch).step
 )
 lr_scheduler_D_B = torch.optim.lr_scheduler.LambdaLR(
     optimizer_D_B, lr_lambda=LambdaLR(
-        opt.n_epochs, opt.epoch, opt.decay_epoch).step
+        opt.n_epochs, opt.epoch_resume, opt.decay_epoch).step
 )
 
 Tensor = torch.cuda.FloatTensor if cuda else torch.Tensor
@@ -194,7 +194,7 @@ loss_D_perEpoch = np.zeros([1, opt.n_epochs])
 
 prev_time = time.time()
 
-for epoch in range(opt.epoch, opt.n_epochs):
+for epoch in range(opt.epoch_resume, opt.n_epochs):
     for i, batch in enumerate(dataloader):
 
         # Set model input
