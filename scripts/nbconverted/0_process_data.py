@@ -65,9 +65,9 @@ seed(randomState)
 
 
 # Load arguments
-data_file = os.path.join(os.path.dirname(os.getcwd()), "data", "pseudomonas", "Pa_compendium_02.22.2014.pcl")
-normalized_data_file = os.path.join(os.path.dirname(os.getcwd()), "data", "pseudomonas", "train_set_normalized.pcl")
-metadata_file = os.path.join(os.path.dirname(os.getcwd()), "metadata", "sample_annotations.tsv")
+data_file = f"{os.path.dir(os.getcwd())}/data/pseudomonas/Pa_compendium_02.22.2014.pcl"
+normalized_data_file = f"{os.path.dir(os.getcwd())}/data/pseudomonas/train_set_normalized.pcl"
+metadata_file = f"{os.path.dir(os.getcwd())}/metadata/pseudomonas/sample_annotations.tsv"
 
 
 # In[3]:
@@ -218,7 +218,12 @@ metadata_selected.head(10)
 # In[11]:
 
 
-data_labeled = data.merge(metadata_selected_labeled, left_index=True, right_index=True, how='inner')
+data_labeled = data.merge(
+    metadata_selected_labeled,
+    left_index=True,
+    right_index=True,
+    how='inner')
+
 print(data_labeled.shape)
 data_labeled.head(5)
 
@@ -247,7 +252,12 @@ ggplot(aes(x='1',y='2', color='metadata'), data=embedding_df) +         geom_poi
 # In[14]:
 
 
-normalized_data_labeled = normalized_data.merge(metadata_selected_labeled, left_index=True, right_index=True, how='inner')
+normalized_data_labeled = normalized_data.merge(
+    metadata_selected_labeled,
+    left_index=True,
+    right_index=True,
+    how='inner')
+
 print(normalized_data_labeled.shape)
 normalized_data_labeled.head(5)
 

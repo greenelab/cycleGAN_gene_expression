@@ -10,8 +10,7 @@ import torchvision.transforms as transforms
 class GeneExpressionDataset(Dataset):
     def __init__(self, root, mode="train"):
         # Training data loader
-        data_file = os.path.join("../../data/%s" % opt.dataset_name +
-                                 "/train/A/all-pseudomonas-gene-normalized.zip")
+        data_file = f"../../data/{opt.dataset_name}/train/A/all-pseudomonas-gene-normalized.zip"
 
         rnaseq = pd.read_table(data_file, index_col=0, header=0).T
 

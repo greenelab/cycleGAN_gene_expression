@@ -21,7 +21,7 @@ import torch.nn.functional as F
 import torch
 
 parser = argparse.ArgumentParser()
-parser.add_argument("--epoch", type=int, default=0,
+parser.add_argument("--epoch_resume", type=int, default=0,
                     help="epoch to start training from")
 parser.add_argument("--n_epochs", type=int, default=200,
                     help="number of epochs of training")
@@ -92,16 +92,16 @@ if cuda:
     criterion_cycle.cuda()
     criterion_identity.cuda()
 
-if opt.epoch != 0:
+if opt.epoch_resume != 0:
     # Load pretrained models
     G_AB.load_state_dict(torch.load(
-        "saved_models/%s/G_AB_%d.pth" % (opt.dataset_name, opt.epoch)))
+        "saved_models/%s/G_AB_%d.pth" % (opt.dataset_name, opt.epoch_resume)))
     G_BA.load_state_dict(torch.load(
-        "saved_models/%s/G_BA_%d.pth" % (opt.dataset_name, opt.epoch)))
+        "saved_models/%s/G_BA_%d.pth" % (opt.dataset_name, opt.epoch_resume)))
     D_A.load_state_dict(torch.load("saved_models/%s/D_A_%d.pth" %
-                                   (opt.dataset_name, opt.epoch)))
+                                   (opt.dataset_name, opt.epoch_resume)))
     D_B.load_state_dict(torch.load("saved_models/%s/D_B_%d.pth" %
-                                   (opt.dataset_name, opt.epoch)))
+                                   (opt.dataset_name, opt.epoch_resume)))
 else:
     # Initialize weights
     G_AB.apply(weights_init_normal)
