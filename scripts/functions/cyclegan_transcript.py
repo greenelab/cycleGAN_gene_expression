@@ -335,9 +335,7 @@ for epoch in range(opt.epoch_resume, opt.n_epochs):
                    (opt.dataset_name, epoch))
 
 # Write loss arrays to file
-G_loss_file = os.path.join("../data/%s" % opt.dataset_name +
-                           "/train/G_loss.txt")
-D_loss_file = os.path.join("../data/%s" % opt.dataset_name +
-                           "/train/D_loss.txt")
+G_loss_file = os.path.join("../output/logs/G_loss.txt")
+D_loss_file = os.path.join("../output/logs/D_loss.txt")
 np.savetxt(G_loss_file, loss_G_perEpoch, delimiter=',')
 np.savetxt(D_loss_file, loss_D_perEpoch, delimiter=',')

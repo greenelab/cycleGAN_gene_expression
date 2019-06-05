@@ -89,7 +89,7 @@ D_loss_data.head(5)
 # Generator loss
 G_loss_out_file = os.path.join(
     os.path.dirname(os.getcwd()),
-    "data","pseudomonas","train", "G_loss_plot.jpg")
+    "output","viz", "G_loss_plot.jpg")
 
 fig = plt.figure()
 plt.plot(G_loss_data.index, G_loss_data.values)
@@ -105,7 +105,7 @@ fig.savefig(G_loss_out_file)
 # Discriminator loss
 D_loss_out_file = os.path.join(
     os.path.dirname(os.getcwd()),
-    "data","pseudomonas","train","D_loss_plot.jpg")
+    "output","viz","D_loss_plot.jpg")
 
 fig = plt.figure()
 plt.plot(D_loss_data.index, D_loss_data.values)
